@@ -6,7 +6,7 @@ const { unauthorized, badRequest } = require('@hapi/boom');
 const isLoggedIn = async (req, res, next) => {
   try {
     const { accessToken, userkey } = req.cookies;
-
+    console.log(accessToken, userkey);
     // 둘 다 없는 경우 로그인이 되어있지 않음으로 판단
     if (!userkey && !accessToken) throw unauthorized('로그인 필요');
 
