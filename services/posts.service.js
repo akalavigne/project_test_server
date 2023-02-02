@@ -25,6 +25,7 @@ class PostService {
       ['commentsCount', 'DESC'],
       ['createdAt', 'DESC'],
     ];
+    let isLast = true;
 
     const { postLocation1, postLocation2, page, type, search } =
       await postLocationValidation.validateAsync(getPostInfo);
@@ -59,7 +60,18 @@ class PostService {
       pageNum,
       order,
     );
-    return posts;
+
+    if (posts) pageNum = page + 1;
+
+    const nextposts = await this.postRepository.getLocationPosts(
+      whereLocation,
+      pageNum,
+      order,
+    );
+
+    if (nextposts.length === 0) isLast = false;
+
+    return { isLast, posts };
   };
 
   createPost = async (postInput) => {
